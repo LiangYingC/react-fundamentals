@@ -14,3 +14,38 @@
 <!-- 🐨 Append the div to the root div using `append` -->
 <!--   💰 document.getElementById('root') -->
 <!--   📜 https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append -->
+
+<!--
+【 Introduction to the DOM: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction 】 
+    1. The Document Object Model (DOM) is the data representation of the objects that comprise the structure and content of a document on the web.
+    2. The DOM is an object-oriented representation of the web page, which can be modified with a scripting language such as JavaScript.
+    3. The page content is stored in the DOM and may be accessed and manipulated via JavaScript, so that we may write this approximative equation: API = DOM + JavaScript.
+    4. Though we focus exclusively on JavaScript in this reference documentation, implementations of the DOM can be built for any language, as this Python : 
+        # Python DOM example
+        import xml.dom.minidom as m
+        doc = m.parse(r"C:\Projects\Py\chap1.xml")
+        doc.nodeName # DOM property of document object
+        p_list = doc.getElementsByTagName("para")
+    5. When you create a script–whether it's inline in a <script> element or included in the web page by means of a script loading instruction–you can immediately begin using the API for the document or window elements to manipulate the document itself or to get at the children of that document.
+    
+【 My Note 】
+    1. 在 Browser Object Model 中，有核心 object window，window 底下還有很多的子物件，像是：document、screen、location、history 等等。
+    2. 所謂的 Document Object Model，即是指 window 底下的 document ，是一個由 Broswer 提供的 application programming interface。
+    3. DOM 是由多個 node 所組成的樹狀結構（DOM Tree）。
+    4. Programmer 可以透過程式語言，通常是 JavaScript ，以及 DOM 提供的 API 去操作/存取 DOM。
+-->
+
+<body>
+  <script type="module">
+    const body = document.body
+
+    const rootDiv = document.createElement('div')
+    rootDiv.setAttribute('id', 'root')
+
+    const contentDiv = document.createElement('div')
+    contentDiv.textContent = 'Hello World !'
+
+    rootDiv.appendChild(contentDiv)
+    body.appendChild(rootDiv)
+  </script>
+</body>
