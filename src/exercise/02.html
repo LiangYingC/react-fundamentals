@@ -4,25 +4,91 @@
 <body>
   <div id="root"></div>
 
-  <!-- 💣 remove this line
+  <!-- unpkg: https://unpkg.com/，like import React -->
   <script src="https://unpkg.com/react@16.13.1/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.development.js"></script>
-  💣 remove this line -->
 
   <script type="module">
     const rootElement = document.getElementById('root')
 
-    // You're going to re-implement this code using React!
-    // 💣 So go ahead and delete this implementation (or comment it out for now)
+    const e = React.createElement
+    const containerElement = e('div', {
+      className: 'container',
+      children: [e('span', null, 'Hello'), ' ', e('span', null, 'World !')],
+    })
     // These three lines are similar to React.createElement
-    const element = document.createElement('div')
-    element.textContent = 'Hello World' // 💰 in React, you set this with the "children" prop
-    element.className = 'container' // 💰 in React, this is also called the "className" prop
-    // This is similar to ReactDOM.render
-    rootElement.append(element)
+    // const element = document.createElement('div')
+    // element.textContent = 'Hello World' // 💰 in React, you set this with the "children" prop
+    // element.className = 'container' // 💰 in React, this is also called the "className" prop
+    // React.createElement( type, [props], [...children])
 
-    // 🐨 Please re-implement the regular document.createElement code above
-    // with these React API calls
-    // 💰 The example in the markdown file should be a good hint for you.
+    ReactDOM.render(containerElement, rootElement)
+    // rootElement.append(element) is similar to ReactDOM.render
+    // ReactDOM.render(element, container[, callback])
   </script>
+
+  <!-- Good To Read : https://ui.dev/imperative-vs-declarative-programming/-->
+  <ul>
+    <li>
+      Imperative programming is like <strong>how</strong> you do something, and
+      declarative programming is more like <strong>what</strong> you do.
+    </li>
+    <li>
+      Many (if not all)
+      <strong
+        >declarative approaches have some sort of underlying imperative
+        abstraction</strong
+      >.
+    </li>
+    <li>
+      Declarative programming is “the act of programming in languages that
+      conform to the mental model of the developer rather than the operational
+      model of the machine.”
+    </li>
+    <li>
+      <p>Declarative</p>
+      <pre>
+        function double (arr) { 
+          let results = [] 
+          for (let i = 0; i < arr.length;i++)
+          { 
+            results.push(arr[i] * 2) 
+          } 
+          return results 
+        }
+
+        function add (arr) {
+          let result = 0
+          for (let i = 0; i < arr.length; i++){
+            result += arr[i]
+          }
+          return result
+        }
+      </pre>
+    </li>
+    <li>
+      <p>Imperative</p>
+      <pre>
+        function double (arr) {
+          return arr.map((item) => item * 2)
+        }
+
+        function add (arr) {
+          return arr.reduce((prev, current) => prev + current, 0)
+        }
+      </pre>
+    </li>
+    <li>
+      React abstracts away the imperative browser API from you to give you a
+      <strong>much more declarative API</strong> to work with.
+    </li>
+    <li>
+      React: responsible for creating React elements (kinda like
+      document.createElement())
+    </li>
+    <li>
+      ReactDOM: responsible for rendering React elements to the DOM (kinda like
+      rootElement.append())
+    </li>
+  </ul>
 </body>
