@@ -5,27 +5,77 @@
   <div id="root"></div>
   <script src="https://unpkg.com/react@16.13.1/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.development.js"></script>
-
-  <!-- 💣 remove this line
   <script src="https://unpkg.com/@babel/standalone@7.9.3/babel.js"></script>
-  💣 remove this line -->
 
-  <script type="module">
-    // 🐨 on the script tag above, change `type="module"`
-    // to `type="text/babel"` so babel will compile this code for the browser to run.
-
+  <script type="text/babel">
+    // 🐨`type="text/babel"` so babel will compile this code for the browser to run.
     // 🐨 re-implement this using JSX!
-    const element = React.createElement('div', {
-      className: 'container',
-      children: 'Hello World',
-    })
+    // const element = React.createElement('div', {
+    //   className: 'container',
+    //   children: 'Hello World',
+    // })
 
-    // 💰 there are a few subtle differences between JSX and HTML. One such
-    // difference is how you apply a class to an element in JSX is by using
-    // `className` rather than `class`!
-    // 📜 You can learn the differences between JSX and HTML syntax from the React docs here:
-    // https://reactjs.org/docs/dom-elements.html#differences-in-attributes
-
+    const children = 'Hello World !'
+    const className = 'container'
+    const props = {children, className}
+    const element = <div {...props} />
+    // same result : const element = <div className={props.className}>{props.children}</div>
     ReactDOM.render(element, document.getElementById('root'))
   </script>
+
+  <!-- 
+    Good To Read : 
+    1. Expressions vs Statements : https://2ality.com/2012/09/expressions-vs-statements.html & https://pjchender.blogspot.com/2016/03/javascriptfunction-statements-and.html 
+    2. Introducing JSX : https://reactjs.org/docs/introducing-jsx.html#specifying-attributes-with-jsx
+  -->
+
+  <!-- 
+      Note : 
+        1. Expression : An expression produces a value and can be written wherever a value is expected, for example as an argument in a function call.
+        2. Statement : Roughly, a statement performs an action. Loops and if statements are examples of statements.
+        3. JSX is an Expression, like <h1>{ isFirstMeet ? 'Nice to Meet you' : 'Long time no see'}</h1>.
+        3. 「 { } in JSX 」 mean this is JS code.
+        4. JSX Prevents Injection Attacks : Everything is converted to a string before being rendered. This helps prevent XSS (cross-site-scripting) attacks.
+        5. JSX Represents Objects : These objects are called “React elements”. You can think of them as descriptions of what you want to see on the screen. React reads these objects and uses them to construct the DOM and keep it up to date.
+            const element = {
+                type: 'h1',
+                props: {
+                className: 'greeting',
+                children: 'Hello, world!'
+                }
+            };
+        6. Can see Babel transfer code at there : https://babeljs.io/repl#?browsers=defaults%2C%20not%20ie%2011%2C%20not%20ie_mob%2011&build=&builtIns=usage&spec=false&loose=false&code_lz=MYewdgzgLgBArgSxgXhgHgCYIG4D4BQMRxRaEADgIZi4ASApgDaMhoD0F1BJJZVNAdRAAnRhnacahHuyx5pJfKEiwGzEENEYUMABQBKFLhgBvacPpQ4wsOjkwA1vQCeyAEQALJi01iBwynI3GGBGSggIADlKAFt6dy91Xwx_QLduYkwcELCI6LiE7w0RMWDwAGFGBGAHZBNKRih6YV0AckSfEoxW_QBfGAzeSToiiX5BzOH0DnGFSfHkmABCMa452RwMjfle_HwgA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=false&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=react&prettier=true&targets=&version=7.11.6&externalPlugins=
+
+          const HelloWorld = () => {
+            return <div key="helloWorldWrap" className="helloWorldWrap">
+              <div className="helloWorld" onClick={alter('helloWorld')}>
+                <span>Hello</span>
+                <span> </span>
+                <span>World !</span>
+              </div>
+            </div>
+          }
+
+          to be
+
+          const HelloWorld = () => {
+            return  React.createElement(
+              "div",
+              {
+                key: "helloWorldWrap",
+                className: "helloWorldWrap"
+              },
+              React.createElement(
+                "div",
+                {
+                  className: "helloWorld",
+                  onClick: alter("helloWorld")
+                },
+                React.createElement("span", null, "Hello"),
+                React.createElement("span", null, " "),
+                React.createElement("span", null, "World !")
+              )
+            );
+          };
+  -->
 </body>
