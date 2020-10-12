@@ -21,14 +21,41 @@
 
     ReactDOM.render(containerElement, rootElement)
 
-    // These three lines are similar to React.createElement
-    // const element = document.createElement('div')
-    // element.textContent = 'Hello World' // 💰 in React, you set this with the "children" prop
-    // element.className = 'container' // 💰 in React, this is also called the "className" prop
-    // React.createElement( type, [props], [...children])
+    /*
+      if console.log(containerElement)
+      will get something like : 
+      {
+        $$typeof: Symbol(react.element),
+        key: null,
+        props: {
+          children: [
+            0: { $$typeof: Symbol(react.element), type: "span", key: "1", ref: null, props: { … }, … }
+            1: " "
+            2: { $$typeof: Symbol(react.element), type: "span", key: "2", ref: null, props: { … }, … }
+          ],
+          className: "container"
+        },
+        ref: null,
+        type: "div"
+        ...
+      } 
 
-    // rootElement.append(element) is similar to ReactDOM.render
-    // ReactDOM.render(element, container[, callback])
+      When you pass an object like that to ReactDOM.render or any other renderer, 
+      it's the renderer's job to interpret that element object and create DOM nodes or whatever else out of it.
+
+      Reference : https://kentcdodds.com/blog/what-is-jsx
+    */
+
+    /* 
+      // These three lines are similar to React.createElement
+      // const element = document.createElement('div')
+      // element.textContent = 'Hello World' // 💰 in React, you set this with the "children" prop
+      // element.className = 'container' // 💰 in React, this is also called the "className" prop
+      // React.createElement( type, [props], [...children])
+
+      // rootElement.append(element) is similar to ReactDOM.render
+      // ReactDOM.render(element, container[, callback])
+    */
   </script>
 
   <!-- Good To Read : https://ui.dev/imperative-vs-declarative-programming/-->
