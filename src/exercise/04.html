@@ -6,6 +6,7 @@
   <script src="https://unpkg.com/react@16.13.1/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.9.3/babel.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script type="text/babel">
     // 🐨 Make a function called `message` which returns the JSX we want to share
     // const element = (
@@ -33,31 +34,35 @@
     /*
       二、進階解之一：React.createElement first argument can pass function ! 原來可以傳 function !
 
-      function message({children}) {
-        return <div className="message">{children}</div>
+      function message({children, id}) {
+        return (
+          <div className="message" id={id}>
+            {children}
+          </div>
+        )
       }
 
       const element = (
         <div className="container">
-          {React.createElement(message, {children: 'Hello World'})}
-          {React.createElement(message, {children: 'Goodbye World'})}
+          {React.createElement(message, {children: 'Hello World', id: '1'})}
+          {React.createElement(message, {children: 'Goodbye World', id: '2'})}
         </div>
-      )  
+      )
     */
 
-    // 三、進階解之二： replace React.createElement with JSX
-    // Like can replace React.createElement('div',...) with <div>...</div>
-    function Message({children}) {
-      return <div className="message">{children}</div>
-    }
-    const element = (
-      <div className="container">
-        <Message>Hello World</Message>
-        <Message>Goodbye World</Message>
-      </div>
-    )
+    /* 三、進階解之二： replace React.createElement with JSX
+      // Like can replace React.createElement('div',...) with <div>...</div>
+      function Message({children}) {
+        return <div className="message">{children}</div>
+      }
+      const element = (
+        <div className="container">
+          <Message>Hello World</Message>
+          <Message>Goodbye World</Message>
+        </div>
+      )
 
-    /*
+      // Console log to see
       console.log(<Message>Hello World</Message>)
       console.log(React.createElement(Message, {children: 'Hello World'}))
 
@@ -75,6 +80,85 @@
 
       but not same, cause object is store by reference.
     */
+
+    /*
+      // 四、進階解之三： 為 custom component 加上 Prop Type
+      const PropType = {
+        // 0. 可以使用 prop-types 套件，就不用自行宣告，詳情可研究：https://npm.im/prop-types。
+        // 1.下面等同於 string: function string(props, propsName, componentName) { ... 。
+        string(props, propsName, componentName) {
+          const propType = typeof props[propsName]
+          if (propType !== 'string') {
+            return new Error(
+              `The ${componentName} needs the prop ${propsName} to be a type of string, but was passed a ${typeof props[
+                propsName
+              ]} `,
+            )
+          }
+        },
+      }
+
+      function Message({greeting, name}) {
+        return (
+          <div className="message">
+            {greeting} {name}
+          </div>
+        )
+      }
+
+      Message.propTypes = {
+        // 0. Message.propTypes 放在 render 的 element 後面就會失效，以 class 來看，不能放在 render() 之後。
+        // 1. 執行到 Message.propTypes 時，會呼叫物件內的各個項目，此時就會判別 type 是否正確。
+        // 2. propTypes 並非沒有代價，它會造成效能上的問題，因此只會在 dev 開發環境執行，在 production 環境並不會執行。(React Doc : For performance reasons, propTypes is only checked in development mode.)
+        // 3. PropTypes are nice because it's a runtime, but you should probably be OK just using TypeScript, the static-type definitions that you have there.
+        greeting: PropType.string,
+        name: PropType.string
+        
+          //【 如果忘記上面的過程，可以試著打開下面這段理解 】： 
+
+          // props(props, propsName, componentName) {
+          //   console.log({props, propsName, componentName})
+          //   // 0. 會印出兩次，因為 props 物件有兩個 key value pair。
+          //   // 1. props : 傳入 Message 的 props 物件，此為  {greeting: "Hello", name: "World"}。
+          //   // 2. propsName : 這個 function 的名稱，自定義，此為 props。
+          //   // 3. componentName : 這個 component 的名稱 ，此為 Message。
+          // }
+
+          // {props: {…}, propsName: "props", componentName: "Message"}
+          //   componentName: "Message"
+          //   props: {greeting: "Hello", name: "World"}
+          //   propsName: "props"
+          // {props: {…}, propsName: "props", componentName: "Message"}
+          //   componentName: "Message"
+          //   props: {greeting: "Goodbye", name: "World"}
+          //   propsName: "props" 
+      }
+    */
+
+    // 五、進階解之三： 使用 React.Fragment 讓 custom component 可以有雙子層結構
+    // React Doc : Fragments let you group a list of children without adding extra nodes to the DOM.
+
+    function Message({greeting, name}) {
+      return (
+        <div className="message">
+          {greeting} {name}
+        </div>
+      )
+    }
+
+    Message.propTypes = {
+      // prop-types：https://npm.im/prop-types。
+      greeting: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }
+
+    const element = (
+      // <> is same as  <React.Fragment>
+      <>
+        <Message greeting="Hello" name="World" />
+        <Message greeting="Goodbye" name="World" />
+      </>
+    )
 
     ReactDOM.render(element, document.getElementById('root'))
   </script>
